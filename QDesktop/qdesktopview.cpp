@@ -274,7 +274,8 @@ QDesktopViewWidget::QDesktopViewWidget(QWidget *parent) :
     dSettings->endGroup();
 
     // Desktop Icon Double Click EventexecDesktopSettings
-    connect(this, SIGNAL(itemDoubleClicked(QListWidgetItem*)), this, SLOT(iconClicked(QListWidgetItem*)));
+    connect(this, SIGNAL(itemDoubleClicked(QListWidgetItem*)), this, SLOT(iconDoubleClicked(QListWidgetItem*)));
+    connect(this, SIGNAL(itemClicked(QListWidgetItem*)), this, SLOT(iconClicked(QListWidgetItem*)));
     connect(desktopDir, SIGNAL(directoryChanged(QString)), this, SLOT(populatedDesktop()));
 }
 
@@ -301,12 +302,12 @@ void QDesktopViewWidget::populatedDesktop()
     {
         QFileInfo fileInfo = list.at(i);
         QString file = fileInfo.fileName();
+        QDesktopViewItem *icon;
 
         // Parse avalable .desktop files
         if (file.endsWith(".desktop", Qt::CaseInsensitive) == true) {
             QSettings settings(dir.absoluteFilePath(fileInfo.fileName()), QSettings::IniFormat);
             settings.beginGroup("Desktop Entry");
-            QDesktopViewItem *icon;
             if(QIcon::hasThemeIcon(settings.value("Icon").toString())) {
                 this->addItem(icon = new QDesktopViewItem(QIcon::fromTheme(settings.value("Icon").toString()), \
                                                    settings.value("Name").toString()));
@@ -326,9 +327,11 @@ void QDesktopViewWidget::populatedDesktop()
 
         // For files on the desktop that are not a .desktop file
         }else{
-            this->addItem(new QDesktopViewItem(QIcon::fromTheme(mime.genericIconName(mime.fromFile(fileInfo.absoluteFilePath()))), \
+            this->addItem(icon = new QDesktopViewItem(QIcon::fromTheme(mime.genericIconName(mime.fromFile(fileInfo.absoluteFilePath()))), \
                                               fileInfo.fileName()));
         }
+
+        icon->setFlags(icon->flags() | Qt::ItemIsEditable); // I have yet to do anything with this
     }
 
 }
@@ -362,6 +365,12 @@ void QDesktopViewWidget::mousePressEvent(QMouseEvent *event)
 
 // Left Click Mouse Events on the Desktop Icon
 void QDesktopViewWidget::iconClicked(QListWidgetItem* icon)
+{
+  qDebug() << icon->flags();
+  qDebug() << "Single clicked";
+}
+
+void QDesktopViewWidget::iconDoubleClicked(QListWidgetItem* icon)
 {
     qDebug() << icon->data(Qt::UserRole).toString() << "\n";
     QProcess commandLine;

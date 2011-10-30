@@ -43,6 +43,7 @@ public:
 
 public slots:
     void iconClicked(QListWidgetItem*);
+    void iconDoubleClicked(QListWidgetItem*);
     void layoutDirection();
     void populatedDesktop();
     void resizeIcons();
