@@ -308,9 +308,18 @@ void QDesktopViewWidget::populatedDesktop()
             QSettings settings(dir.absoluteFilePath(fileInfo.fileName()), QSettings::IniFormat);
             settings.beginGroup("Desktop Entry");
             QDesktopViewItem *icon;
-            this->addItem(icon = new QDesktopViewItem(QIcon::fromTheme(settings.value("Icon").toString()), \
-                                               settings.value("Name").toString()));
-
+            if(QIcon::hasThemeIcon(settings.value("Icon").toString())) {
+                this->addItem(icon = new QDesktopViewItem(QIcon::fromTheme(settings.value("Icon").toString()), \
+                                                   settings.value("Name").toString()));
+            }else{
+                QString filepath = QString("/usr/share/pixmaps/").append(settings.value("Icon").toString()).append(".png");
+                if(QFile(filepath).exists()) {
+                    this->addItem(icon = new QDesktopViewItem(QIcon(filepath), \
+                                                       settings.value("Name").toString()));
+                } else { // there isn't a icon in /usr/share/pixmaps
+                  qDebug() << "Can't find:" << filepath << "\n";
+                }
+            }
             // !!!Important: setData value = the icon's file path
             icon->setData(Qt::UserRole, QVariant(fileInfo.absoluteFilePath()));
 
