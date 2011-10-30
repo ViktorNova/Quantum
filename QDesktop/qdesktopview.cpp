@@ -439,7 +439,20 @@ void QDesktopViewWidget::layoutDirection()
 // Right Click Desktop Menu Create Folder Action
 void QDesktopViewWidget::createFolder()
 {
-    qDebug() << "Create Folder Action Triggered";
+  QDir desktop = QDir(QDesktopServices::storageLocation( QDesktopServices::DesktopLocation));
+  QString base_folder_name = QString("untitled folder");
+  QString folder_name = base_folder_name;
+
+  int folder_number = 1;
+  while(desktop.exists(folder_name)) {
+    qDebug() << "Folder" << base_folder_name << "already exists, increment by 1";
+    folder_name = base_folder_name;
+    folder_name.append(QString(" %1").arg(++folder_number));
+  }
+
+  qDebug() << "Creating folder" << folder_name;
+
+  desktop.mkdir(folder_name);
 }
 
 // Right Click Desktop Menu Create Launcher(.desktop) Action
