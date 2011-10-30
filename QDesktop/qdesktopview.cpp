@@ -63,10 +63,9 @@ QDesktopViewWidget::QDesktopViewWidget(QWidget *parent) :
     setViewMode(QListView::IconMode);
     setSpacing(20);
     setFlow(QListView::TopToBottom);
-    setMovement(QListView::Snap);
     setLayoutMode(QListView::Batched);
     setBatchSize(100);
-    setMovement(QListView::Snap);
+    setMovement(QListView::Free);
     setIconSize(QSize(48, 48));
     setUniformItemSizes(true);
     setWrapping(true);
