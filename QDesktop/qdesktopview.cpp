@@ -84,6 +84,11 @@ QDesktopViewWidget::QDesktopViewWidget(QWidget *parent) :
     // Right Click Desktop Menu
     menu = new QMenu(this);
 
+    // Create Folder
+    QAction *createFolder = new QAction(tr("New Folder"), this);
+    menu->addAction(createFolder);
+    connect(createFolder, SIGNAL(triggered()), this, SLOT(createFolder()));
+
     // Create submenu for Create Document
     QMenu *viewMenu = menu->addMenu(tr("&View"));
     QActionGroup *viewGroup = new QActionGroup(this);
@@ -199,12 +204,6 @@ QDesktopViewWidget::QDesktopViewWidget(QWidget *parent) :
 
     // New Menu
     QMenu *create = menu->addMenu(tr("&New"));
-
-    // Create Folder
-    QAction *createFolder = new QAction(QIcon::fromTheme("folder"), tr("&Folder"), this);
-    create->addAction(createFolder);
-    createFolder->setIconVisibleInMenu(true);
-    connect(createFolder, SIGNAL(triggered()), this, SLOT(createFolder()));
 
     // Create Launcher
     QAction *createLauncher = new QAction(QIcon::fromTheme("application-x-desktop"), tr("&Launcher"), this);
