@@ -71,10 +71,10 @@ QDesktopViewWidget::QDesktopViewWidget(QWidget *parent) :
     setWrapping(true);
     setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-    setSortingEnabled(true);
+    //setSortingEnabled(true);
     setLayoutDirection(Qt::LeftToRight);
     setSelectionRectVisible(true);
-    setTextElideMode(Qt::ElideMiddle);
+    //setTextElideMode(Qt::ElideMiddle);
     setDragEnabled(true);
     setFrameStyle(0);
     setFrameShape(QFrame::NoFrame);
