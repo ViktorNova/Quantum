@@ -39,6 +39,7 @@ class QDesktopViewWidget : public QListWidget
 public:
     explicit QDesktopViewWidget(QWidget *parent = 0);
     void mousePressEvent(QMouseEvent *);
+    bool isSelected(QListWidgetItem *);
 
 
 public slots:

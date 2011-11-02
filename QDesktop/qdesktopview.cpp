@@ -335,6 +335,15 @@ void QDesktopViewWidget::populatedDesktop()
 
 }
 
+bool QDesktopViewWidget::isSelected(QListWidgetItem *item) {
+    QList<QListWidgetItem*> items = this->selectedItems();
+
+    for(int index = 0; index < items.size(); ++index) {
+        if(items.at(index) == item) return true;
+    }
+    return false;
+}
+
 // Right Click Mouse Events on the Desktop & Desktop Icon
 void QDesktopViewWidget::mousePressEvent(QMouseEvent *event)
 {
@@ -348,6 +357,18 @@ void QDesktopViewWidget::mousePressEvent(QMouseEvent *event)
     //
     if (event->button() == Qt::RightButton)
     {
+        int numSelectedItems = this->selectedItems().size();
+
+        if(numSelectedItems == 0) {
+            item->setSelected(true);
+        } else if(numSelectedItems == 1) {
+            this->clearSelection();
+            item->setSelected(true);
+        } else if(!this->isSelected(item)) {
+            this->clearSelection();
+            item->setSelected(true);
+        }
+
         if (item == 0)
         {
             menu->exec(startPos);
