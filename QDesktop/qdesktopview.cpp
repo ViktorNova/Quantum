@@ -357,24 +357,25 @@ void QDesktopViewWidget::mousePressEvent(QMouseEvent *event)
     //
     if (event->button() == Qt::RightButton)
     {
-        int numSelectedItems = this->selectedItems().size();
-
-        if(numSelectedItems == 0) {
-            item->setSelected(true);
-        } else if(numSelectedItems == 1) {
-            this->clearSelection();
-            item->setSelected(true);
-        } else if(!this->isSelected(item)) {
-            this->clearSelection();
-            item->setSelected(true);
-        }
-
         if (item == 0)
         {
             menu->exec(startPos);
             //qDebug() << "Desktop Right Clicked" << "\n";
         } else {
+            int numSelectedItems = this->selectedItems().size();
+
+            if(numSelectedItems == 0) {
+                item->setSelected(true);
+            } else if(numSelectedItems == 1) {
+                this->clearSelection();
+                item->setSelected(true);
+            } else if(!this->isSelected(item)) {
+                this->clearSelection();
+                item->setSelected(true);
+            }
+
             iconMenu->exec(startPos);
+
             qDebug() << item->data(Qt::UserRole).toString() << "\n";
             //qDebug() << "Icon Right Clicked" << "\n";
         }
